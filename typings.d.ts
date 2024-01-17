@@ -15,6 +15,7 @@ type Todo = {
   title: string;
   status: TypedColumn;
   image?: Image;
+  order?: number;
 };
 
 type Image = {

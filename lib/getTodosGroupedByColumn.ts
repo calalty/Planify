@@ -1,4 +1,3 @@
-import { title } from "process";
 import { databases } from "../appwrite";
 
 export const getTodosGroupedByColumn = async () => {
@@ -9,24 +8,27 @@ export const getTodosGroupedByColumn = async () => {
 
   const todos = data.documents;
 
-  const columns = todos.reduce((acc, todo) => {
-    if (!acc.get(todo.status)) {
-      acc.set(todo.status, {
-        id: todo.status,
-        todos: [],
+  const columns = todos
+    .sort((a, b) => a.order - b.order)
+    .reduce((acc, todo) => {
+      if (!acc.get(todo.status)) {
+        acc.set(todo.status, {
+          id: todo.status,
+          todos: [],
+        });
+      }
+
+      acc.get(todo.status)!.todos.push({
+        $id: todo.$id,
+        $createdAt: todo.$createdAt,
+        title: todo.title,
+        status: todo.status,
+        order: todo.order,
+        ...(todo.image && { image: JSON.parse(todo.image) }),
       });
-    }
 
-    acc.get(todo.status)!.todos.push({
-      $id: todo.$id,
-      $createdAt: todo.$createdAt,
-      title: todo.title,
-      status: todo.status,
-      ...(todo.image && { image: JSON.parse(todo.image) }),
-    });
-
-    return acc;
-  }, new Map<TypedColumn, Column>());
+      return acc;
+    }, new Map<TypedColumn, Column>());
 
   const columnTypes: TypedColumn[] = ["todo", "inprogress", "done"];
 

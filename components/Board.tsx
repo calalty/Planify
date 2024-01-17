@@ -6,19 +6,20 @@ import { useBoardStore } from "../store/BoardStore";
 import Column from "./Column";
 
 function Board() {
-  const [getBoard, board, setBoardState] = useBoardStore((state) => [
-    state.getBoard,
-    state.board,
-    state.setBoardState,
-  ]);
+  const [getBoard, board, setBoardState, updateTodoState] = useBoardStore(
+    (state) => [
+      state.getBoard,
+      state.board,
+      state.setBoardState,
+      state.updateTodoState,
+    ]
+  );
 
   useEffect(() => {
     getBoard();
   }, [getBoard]);
 
-  // This function is triggered when a drag operation is completed
   const handleOnDragEnd = (results: DropResult) => {
-    // Extract relevant information from the drag result
     const { destination, source, type } = results;
 
     // If there's no valid destination, exit the function
@@ -33,14 +34,12 @@ function Board() {
       setBoardState({ ...board, columns: rearrangedColumns });
     }
 
-    // Extract the columns from the board
     const columns = Array.from(board.columns);
 
     // Identify the source and destination columns of the dragged item
     const startColIndex = columns[Number(source.droppableId)];
     const finishColIndex = columns[Number(destination.droppableId)];
 
-    console.log(startColIndex[0], startColIndex[1]);
     // Create objects representing the source and destination columns
     const startCol: Column = {
       id: startColIndex[0],
@@ -52,53 +51,47 @@ function Board() {
       todos: finishColIndex[1].todos,
     };
 
+    const finishTodos = Array.from(finishCol.todos);
+
     // If either the source or destination columns are missing, exit the function
     if (!startCol || !finishCol) return;
 
     // If the item is dropped in the same place, do nothing
     if (source.index === destination.index && startCol === finishCol) return;
 
-    // Extract the todos array from the source column
     const newTodos = startCol.todos;
 
-    // Remove the dragged item from the source column
     const [toDoMoved] = newTodos.splice(source.index, 1);
 
-    // If the item is dropped within the same column
-    if (startCol.id === finishCol.id) {
-      // Insert the dragged item at the new position
-      newTodos.splice(destination.index, 0, toDoMoved);
-      const newCol: Column = {
-        id: startCol.id,
-        todos: newTodos,
-      };
+    const newCol: Column = {
+      id: startCol.id,
+      todos: newTodos,
+    };
 
-      // Update the columns map with the modified column
-      const newColumns = new Map(board.columns);
+    const newColumns = new Map(board.columns);
+
+    if (startCol.id === finishCol.id) {
+      newTodos.splice(destination.index, 0, toDoMoved);
+
       newColumns.set(startCol.id, newCol);
 
-      // Update the board state with the modified columns
       setBoardState({ ...board, columns: newColumns });
+
+      newTodos.forEach(async (todo, index) => {
+        await updateTodoState({ ...todo, order: index }, startCol.id);
+      });
     } else {
-      // If the item is dropped into a different column
-      const finishTodos = Array.from(finishCol.todos);
-      // Insert the dragged item at the new position in the destination column
       finishTodos.splice(destination.index, 0, toDoMoved);
 
-      // Update the columns map with the modified source and destination columns
-      const newColumns = new Map(board.columns);
-      const newCol: Column = {
-        id: startCol.id,
-        todos: newTodos,
-      };
-
-      newColumns.set(startCol.id, newCol);
       newColumns.set(finishCol.id, {
         id: finishCol.id,
         todos: finishTodos,
       });
 
-      // Update the board state with the modified columns
+      finishTodos.forEach(async (todo, index) => {
+        await updateTodoState({ ...todo, order: index }, finishCol.id);
+      });
+
       setBoardState({ ...board, columns: newColumns });
     }
   };
