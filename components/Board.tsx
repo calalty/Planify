@@ -4,6 +4,8 @@ import React, { useEffect } from "react";
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd";
 import { useBoardStore } from "../store/BoardStore";
 import Column from "./Column";
+import { calculateRelativeTodoOrder } from "../utils/calculate-relative-todo-order";
+import { calculateTodoOrder } from "../utils/calculate-todo-order";
 
 function Board() {
   const [getBoard, board, setBoardState, updateTodoState] = useBoardStore(
@@ -77,9 +79,14 @@ function Board() {
 
       setBoardState({ ...board, columns: newColumns });
 
-      newTodos.forEach(async (todo, index) => {
-        await updateTodoState({ ...todo, order: index }, startCol.id);
-      });
+      const indexOfTodoMoved = newTodos.indexOf(toDoMoved);
+
+      const finalOrder = calculateTodoOrder(
+        newTodos,
+        calculateRelativeTodoOrder(newTodos, indexOfTodoMoved)
+      );
+
+      updateTodoState({ ...toDoMoved, order: finalOrder }, startCol.id);
     } else {
       finishTodos.splice(destination.index, 0, toDoMoved);
 
@@ -88,9 +95,14 @@ function Board() {
         todos: finishTodos,
       });
 
-      finishTodos.forEach(async (todo, index) => {
-        await updateTodoState({ ...todo, order: index }, finishCol.id);
-      });
+      const indexOfTodoMoved = finishTodos.indexOf(toDoMoved);
+
+      const finalOrder = calculateTodoOrder(
+        finishTodos,
+        calculateRelativeTodoOrder(finishTodos, indexOfTodoMoved)
+      );
+
+      updateTodoState({ ...toDoMoved, order: finalOrder }, finishCol.id);
 
       setBoardState({ ...board, columns: newColumns });
     }
