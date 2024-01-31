@@ -1,7 +1,8 @@
-import React from "react";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
-import ToDoCard from "./ToDoCard";
+
+import { ToDoCard } from "./ToDoCard";
+
+import { NewToDoForm } from "./NewToDoForm";
 
 type Props = {
   id: TypedColumn;
@@ -17,7 +18,7 @@ const idToColumnText: {
   done: "Done",
 };
 
-function Column({ id, todos, index }: Props) {
+export const Column = ({ id, todos, index }: Props) => {
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -63,11 +64,7 @@ function Column({ id, todos, index }: Props) {
 
                   {provided.placeholder}
 
-                  <div className="flex items-end justify-end">
-                    <button className="text-green-500 hover:text-green-600">
-                      <PlusCircleIcon className="h-10 w-10" />
-                    </button>
-                  </div>
+                  <NewToDoForm id={id} />
                 </div>
               </div>
             )}
@@ -76,6 +73,4 @@ function Column({ id, todos, index }: Props) {
       )}
     </Draggable>
   );
-}
-
-export default Column;
+};

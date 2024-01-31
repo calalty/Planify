@@ -3,11 +3,11 @@
 import React, { useEffect } from "react";
 import { DragDropContext, DropResult, Droppable } from "@hello-pangea/dnd";
 import { useBoardStore } from "../store/BoardStore";
-import Column from "./Column";
+import { Column } from "./Column";
 import { calculateRelativeTodoOrder } from "../utils/calculate-relative-todo-order";
 import { calculateTodoOrder } from "../utils/calculate-todo-order";
 
-function Board() {
+export const Board = () => {
   const [getBoard, board, setBoardState, updateTodoState] = useBoardStore(
     (state) => [
       state.getBoard,
@@ -72,12 +72,11 @@ function Board() {
 
     const newColumns = new Map(board.columns);
 
+    // If the item is moved in the same column reorder items
     if (startCol.id === finishCol.id) {
       newTodos.splice(destination.index, 0, toDoMoved);
 
       newColumns.set(startCol.id, newCol);
-
-      setBoardState({ ...board, columns: newColumns });
 
       const indexOfTodoMoved = newTodos.indexOf(toDoMoved);
 
@@ -87,6 +86,10 @@ function Board() {
       );
 
       updateTodoState({ ...toDoMoved, order: finalOrder }, startCol.id);
+
+      setBoardState({ ...board, columns: newColumns });
+
+      // If the item is moved in another column reorder items
     } else {
       finishTodos.splice(destination.index, 0, toDoMoved);
 
@@ -126,6 +129,4 @@ function Board() {
       </Droppable>
     </DragDropContext>
   );
-}
-
-export default Board;
+};

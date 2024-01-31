@@ -5,7 +5,8 @@ import planifyLogo from "../images/planify.png";
 import Image from "next/image";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Avatar from "react-avatar";
-function Header() {
+
+export const Header = () => {
   return (
     <header>
       <div className="flex flex-col md:flex-row items-center p-5 bg-gray-500/5 rounded-br-2xl">
@@ -45,6 +46,4 @@ function Header() {
       </div>
     </header>
   );
-}
-
-export default Header;
+};
