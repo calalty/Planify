@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { getTodosGroupedByColumn } from "../lib/getTodosGroupedByColumn";
-import { updateTodo } from "../lib/updateTodos";
+import { updateTodo } from "../lib/updateTodo";
 import { createTodo } from "../lib/createTodo";
 import { deleteTodo } from "../lib/deleteTodo";
 
@@ -11,9 +11,11 @@ type BoardState = {
   updateTodoState: (todo: Todo, columnId: string) => Promise<void>;
   createTodoState: (todo: Partial<Todo>, columnId: string) => Promise<void>;
   deleteTodoState: (id: string) => Promise<void>;
+  searchString: string;
+  setSearchString: (searchString: string) => void;
 };
 
-export const useBoardStore = create<BoardState>((set) => ({
+export const useBoardStore = create<BoardState>((set, get) => ({
   board: {
     columns: new Map<TypedColumn, Column>(),
   },
@@ -23,6 +25,14 @@ export const useBoardStore = create<BoardState>((set) => ({
   },
   setBoardState: (board) => set({ board }),
   updateTodoState: async (todo, columnId) => await updateTodo(todo, columnId),
-  createTodoState: async (todo, columnId) => await createTodo(todo, columnId),
-  deleteTodoState: async (id) => await deleteTodo(id),
+  createTodoState: async (todo, columnId) => {
+    await createTodo(todo, columnId);
+    await get().getBoard();
+  },
+  deleteTodoState: async (id) => {
+    await deleteTodo(id);
+    await get().getBoard();
+  },
+  searchString: "",
+  setSearchString: (searchString) => set({ searchString }),
 }));

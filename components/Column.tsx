@@ -3,6 +3,7 @@ import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { ToDoCard } from "./ToDoCard";
 
 import { NewToDoForm } from "./NewToDoForm";
+import { useBoardStore } from "../store/BoardStore";
 
 type Props = {
   id: TypedColumn;
@@ -19,6 +20,8 @@ const idToColumnText: {
 };
 
 export const Column = ({ id, todos, index }: Props) => {
+  const [searchString] = useBoardStore((state) => [state.searchString]);
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided) => (
@@ -36,16 +39,28 @@ export const Column = ({ id, todos, index }: Props) => {
                   snapshot.isDraggingOver ? "bg-green-200" : "bg-white/50"
                 }`}
               >
-                <h2 className="flex justify-between font-bold text-xl p-2">
+                <h2 className="flex justify-between font-bold text-xl p-2 mb-4">
                   {idToColumnText[id]}
 
                   <span className="text-gray-500 bg-gray-200 rounded-full px-2 py-1 text-sm font-normal">
-                    {todos.length}
+                    {!searchString
+                      ? todos.length
+                      : todos.filter(({ title }) =>
+                          title
+                            .toLowerCase()
+                            .includes(searchString.toLowerCase())
+                        ).length}
                   </span>
                 </h2>
 
-                <div className="space-y-2">
-                  {todos.map((todo, index) => (
+                {todos.map((todo, index) => {
+                  if (
+                    searchString &&
+                    !todo.title.toLowerCase().includes(searchString)
+                  )
+                    return null;
+
+                  return (
                     <Draggable
                       key={todo.$id}
                       draggableId={todo.$id}
@@ -60,12 +75,12 @@ export const Column = ({ id, todos, index }: Props) => {
                         />
                       )}
                     </Draggable>
-                  ))}
+                  );
+                })}
 
-                  {provided.placeholder}
+                {provided.placeholder}
 
-                  <NewToDoForm id={id} />
-                </div>
+                <NewToDoForm id={id} />
               </div>
             )}
           </Droppable>

@@ -107,7 +107,7 @@ export const Board = () => {
 
       updateTodoState({ ...toDoMoved, order: finalOrder }, finishCol.id);
 
-      setBoardState({ ...board, columns: newColumns });
+      // setBoardState({ ...board, columns: newColumns });
     }
   };
 

@@ -24,7 +24,7 @@ export const ToDoCard = ({
 
   return (
     <div
-      className="bg-white rounded-md space-y-2 drop-shadow-md"
+      className="bg-white rounded-md space-y-2 drop-shadow-md mt-4"
       {...draggableProps}
       {...dragHandleProps}
       ref={innerRef}

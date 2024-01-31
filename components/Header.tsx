@@ -5,11 +5,17 @@ import planifyLogo from "../images/planify.png";
 import Image from "next/image";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import Avatar from "react-avatar";
+import { useBoardStore } from "../store/BoardStore";
 
 export const Header = () => {
+  const [searchString, setSearchString] = useBoardStore((state) => [
+    state.searchString,
+    state.setSearchString,
+  ]);
+
   return (
     <header>
-      <div className="flex flex-col md:flex-row items-center p-5 bg-gray-500/5 rounded-br-2xl">
+      <div className="flex flex-col md:flex-row items-center p-5 bg-gray-200 rounded-br-2xl">
         <Image
           src={planifyLogo}
           alt="Planify logo"
@@ -28,6 +34,7 @@ export const Header = () => {
               type="text"
               placeholder="Search"
               className="flex-1 outline-none p-2"
+              onChange={(e) => setSearchString(e.target.value)}
             />
             <button type="submit" hidden>
               Search
