@@ -80,7 +80,7 @@ export const Column = ({ id, todos, index }: Props) => {
 
                 {provided.placeholder}
 
-                <NewToDoForm id={id} />
+                <NewToDoForm todos={todos} id={id} />
               </div>
             )}
           </Droppable>

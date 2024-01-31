@@ -10,7 +10,7 @@ export const calculateRelativeTodoOrder = (
   } else if (indexOfTodoMoved === 0 && todos.length > 1) {
     return Math.round(todos[indexOfTodoMoved + 1].order / 2);
   } else if (indexOfTodoMoved === 0) {
-    return Math.round(indexOfTodoMoved);
+    return indexOfTodoMoved;
   } else {
     return Math.round(todos[indexOfTodoMoved - 1].order * 2);
   }

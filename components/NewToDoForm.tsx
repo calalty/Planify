@@ -5,17 +5,23 @@ import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
 type Props = {
   id: string;
+  todos: Todo[];
 };
 
-export const NewToDoForm = ({ id }: Props) => {
+export const NewToDoForm = ({ id, todos }: Props) => {
   const [createTodoState] = useBoardStore((state) => [state.createTodoState]);
 
   const [isNewTodo, setIsNewTodo] = useState<boolean>(false);
   const [value, setValue] = useState<string>();
 
+  const order =
+    todos && todos.length > 0
+      ? Math.round(todos[todos.length - 1].order * 2)
+      : 0;
+
   const handleOnSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    void createTodoState({ title: value, order: 1 }, id);
+    void createTodoState({ title: value, order }, id);
     setIsNewTodo(false);
     setValue("");
   };
