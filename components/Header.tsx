@@ -33,6 +33,7 @@ export const Header = () => {
             <input
               type="text"
               placeholder="Search"
+              value={searchString}
               className="flex-1 outline-none p-2"
               onChange={(e) => setSearchString(e.target.value)}
             />
