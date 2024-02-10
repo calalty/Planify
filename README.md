@@ -1,37 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+![image](https://github.com/calalty/Planify/assets/64406113/999a68af-dbb7-42d7-9ee7-739fe540d820)
 
-## Getting Started
+## Deployed on Vercel 🚀
 
-First, run the development server:
+https://planify-mocha.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Technical Skills 👨‍💻
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+ ![appwrite](https://github.com/calalty/Planify/assets/64406113/9248d010-9271-40b4-980a-dba75b661e68) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white) ![image](https://github.com/calalty/Planify/assets/64406113/a4e196ac-e0c7-4aa5-baa0-7eb8e4180b49)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## What did I do? 🤔
 
-## Learn More
+🎯 I firstly followed along to [Sonny Sanghas Trello Tutorial](https://www.youtube.com/watch?v=TI2AvfCj5oM) to understand how i can: integrate Appwrite, use Zustand to update the board, and use an external package (**react-dnd**) for drag and drop functionality. 
 
-To learn more about Next.js, take a look at the following resources:
+🎯 I then took it upon myself to implement:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Order Value Implementation
+To enhance the user experience and maintain the visual order of items after drag-and-drop actions, an "order" value was introduced in the database schema. The implementation involves mathematical calculations to update the order of todo items. This includes handling scenarios where a todo item is dragged between existing items, placed before the first item, or after the last item on the column. This ensures a seamless drag-and-drop experience, resembling Trello's behavior.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. CRUD Operations Integration
+The application now supports essential CRUD (Create, Read, Update, Delete) operations through the integration of DELETE, PATCH, and POST requests. This enables users to manipulate their task data effectively. These operations are essential for managing the lifecycle of todo items, ensuring a dynamic and responsive user interface.
 
-## Deploy on Vercel
+## What could I improve? 🛠️
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+🎯 User Account Integration
+To enhance personalization and security, consider implementing user account functionality using Next Auth. This would allow each user to have their personalized board with unique data associated with their account.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# Planify
+🎯 Board Management
+Introducing the ability for users to create multiple boards. This feature provides users with the flexibility to organize tasks and information for various purposes.
+
+🎯 Image Upload Functionality
+Users could attach images to tasks or boards, providing a more comprehensive and visually appealing representation of their work.
